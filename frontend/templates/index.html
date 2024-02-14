@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #logo {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <img src="path/to/your/logo.png" alt="Logo" id="logo">
+        <h1>File Upload</h1>
+        <input type="file" name="files[]" accept=".xlsx" multiple>
+        <br>
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if filenames %}
+        <h2>Uploaded Files:</h2>
+        <ul>
+            {% for filename in filenames %}
+                <li>{{ filename }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
