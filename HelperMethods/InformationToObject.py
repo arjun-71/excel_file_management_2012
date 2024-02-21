@@ -27,11 +27,13 @@ def process_csv_data(new_csv_data, name_of_the_project):
 
             if pd.notna(value) and index > 3 and index < 38:
                 column_field_value = budgetData.replace_value(column_name)
+                print(column_field_value + "->")
                 if column_name == project_code_value:
                     sub_section_value = value
-                if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget'] and sub_section_value.find("Subtotal") == -1:
+                    print(column_field_value)
+                if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget','Appropriated Budget','Budget Adjustments','Adjusted Budget'] and sub_section_value.find("Subtotal") == -1:
                     budgetData.set_value([project_name, section_value, sub_section_value, column_field_value], value)
-                    print(project_name,section_value, sub_section_value, column_field_value)
+                    #print(project_name,section_value, sub_section_value, column_field_value)
                     print(value)
     
 

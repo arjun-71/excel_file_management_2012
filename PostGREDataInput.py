@@ -68,7 +68,7 @@ for i in range(0,1):
 
 
   first_row = csv.iloc[1]
-  print(first_row)
+ # print(first_row)
   first_column = csv.iloc[:, 0]
   #print(first_column)
 
@@ -93,7 +93,7 @@ for i in range(0,1):
   new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
   #print(new_csv_file_name)
   print("the new resulting csv file name")
-  print(new_csv_file_name)
+  #print(new_csv_file_name)
 
 
   #update the name in the folder as well 
@@ -103,13 +103,13 @@ for i in range(0,1):
 
 
 
-  print("the first five rows of the given dataframe 2")
+  #print("the first five rows of the given dataframe 2")
  
   # Read and print the first few rows of the new CSV file
   new_csv_data = pd.read_csv(new_csv_file_name)                                             
   # Print rows 6 to 11 of the DataFrame
   print("Rows 6 to 11 of the DataFrame:")
-  print(new_csv_data.iloc[5:11])
+  #print(new_csv_data.iloc[5:11])
 
  
   
@@ -234,11 +234,11 @@ for i in range(0,1):
   # Print the first few rows of the DataFrame
 
   #print(df.head(60))   
-  print(resultant_file)
+  #print(resultant_file)
 
-  print(uncommitted_Total)
+  #print(uncommitted_Total)
 
-  print(total)
+  #print(total)
 
 
   #create the resultant file and add to the final output file here
