@@ -101,8 +101,20 @@ for i in range(0,1):
   # Save the DataFrame to the new CSV file
   csv.to_csv(new_csv_file_name, index=False)
 
+
+
+  print("the first five rows of the given dataframe 2")
+ 
   # Read and print the first few rows of the new CSV file
-  new_csv_data = pd.read_csv(new_csv_file_name)
+  new_csv_data = pd.read_csv(new_csv_file_name)                                             
+  # Print rows 6 to 11 of the DataFrame
+  print("Rows 6 to 11 of the DataFrame:")
+  print(new_csv_data.iloc[5:11])
+
+ 
+  
+  
+
 
   #print(new_csv_data.head())
 
