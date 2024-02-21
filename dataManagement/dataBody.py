@@ -320,6 +320,7 @@ class BudgetData: #the following class declaration contains budget object type f
                 return 'Uncommitted Budget'
         elif input_string == 'Unnamed: 12':
                 return 'Func Code'
+        
         else:
                 return input_string  # Return the original string if no match is found
 
