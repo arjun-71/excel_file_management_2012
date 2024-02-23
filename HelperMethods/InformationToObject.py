@@ -26,25 +26,32 @@ def process_csv_data(new_csv_data, name_of_the_project):
 
           #  print("column name -> "+ column_name+ " value ->")
            # print(value)
-            
+            #print(column_name)
             
             if index == 0 and value == "Current Budget":
                 #print("project name is")
-                project_name = column_name
+                
+                project_name = column_name              #find the project name 
+                
                 #print(project_name)
             if column_name == "LSC SOLS Collaborative Classroom  / 2012-22810 / Bill Johns" and value != "0" and pd.notna(value) and index > 0 and value in ['Land Acquisition', 'Construction Costs', 'Consultants', 'Additional University Costs', 'Contingency Funds', 'Fees']:
                 section_value = value
-                print(section_value)                            #this has been sorted now yessir
+              #  print(section_value)                            #this has been sorted now yessir
             if pd.notna(value) and index > 3 and index < 38:
+
                # print(column_name + "->")
+                #print(column_name+"->")
                 column_field_value = budgetData.replace_value(column_name)
                 #print(column_field_value)
                 
-                if column_name == project_code_value:
+                if column_name == "*":
                     sub_section_value = value
-                    
+                    #print(sub_section_value)
+                    #print(sub_section_value) 
                 if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget','Appropriated Budget','Budget Adjustments','Adjusted Budget'] and sub_section_value.find("Subtotal") == -1:
-                    budgetData.set_value([project_name, section_value, sub_section_value, column_field_value], value)
+                    budgetData.set_value([name_of_the_project, section_value, sub_section_value, column_field_value], value)
+                    print(name_of_the_project + " "+ section_value + sub_section_value + " ")
+                    #print(name_of_the_project)
                    # print(project_name,section_value, sub_section_value)
                     #print(value)
     
