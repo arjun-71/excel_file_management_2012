@@ -19,6 +19,7 @@ def process_csv_data(new_csv_data, name_of_the_project):
     for index, row in new_csv_data.iterrows():                                  #going through each row 
         #project_code_value = new_csv_data.columns[1]
         project_code = new_csv_data.columns[1] 
+        
         parts = project_code.split('/')
         project_code_value = parts[1].strip() 
         #print(project_code_value)
@@ -34,23 +35,31 @@ def process_csv_data(new_csv_data, name_of_the_project):
                 project_name = column_name              #find the project name 
                 
                 #print(project_name)
-            if column_name == "LSC SOLS Collaborative Classroom  / 2012-22810 / Bill Johns" and value != "0" and pd.notna(value) and index > 0 and value in ['Land Acquisition', 'Construction Costs', 'Consultants', 'Additional University Costs', 'Contingency Funds', 'Fees']:
-                section_value = value
+                
+            if column_name == project_code and value != "0" and pd.notna(value) and index > 0 and value in ['Land Acquisition', 'Construction Costs', 'Consultants', 'Additional University Costs', 'Contingency Funds', 'Fees']:
+                section_value = value       #objectify th column name
               #  print(section_value)                            #this has been sorted now yessir
-            if pd.notna(value) and index > 3 and index < 38:
+            if pd.notna(value)  and index < 50:
 
                # print(column_name + "->")
                 #print(column_name+"->")
+                print("the column name is")
+                print(column_name)
                 column_field_value = budgetData.replace_value(column_name)
+
+                print(column_field_value)                #
                 #print(column_field_value)
                 
                 if column_name == "*":
                     sub_section_value = value
+                    #print(sub_section_value)                #this is the func code
                     #print(sub_section_value)
                     #print(sub_section_value) 
                 if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget','Appropriated Budget','Budget Adjustments','Adjusted Budget'] and sub_section_value.find("Subtotal") == -1:
                     budgetData.set_value([name_of_the_project, section_value, sub_section_value, column_field_value], value)
-                    print(name_of_the_project + " "+ section_value + sub_section_value + " ")
+                    print([name_of_the_project, section_value, sub_section_value, column_field_value])
+                    print(value)
+                    #print(name_of_the_project + " "+ section_value + sub_section_value + " ")
                     #print(name_of_the_project)
                    # print(project_name,section_value, sub_section_value)
                     #print(value)

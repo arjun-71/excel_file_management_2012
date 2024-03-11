@@ -311,15 +311,15 @@ class BudgetData: #the following class declaration contains budget object type f
         elif input_string == self.name_of_the_project:
                 return 'Current Budget'
         elif input_string == 'Unnamed: 5':
-                return 'Encumbered'
+                return 'Appropriated Budget'
         elif input_string == 'Unnamed: 7':
-                return 'Expensed'
+                return 'Budget Adjustments'
         elif input_string == 'Unnamed: 9':
-                return 'Anticipated Costs'
+                return 'Adjusted Budget'
         elif input_string == 'Unnamed: 11':
-                return 'Uncommitted Budget'
-        elif input_string == 'Unnamed: 12':
-                return 'Func Code'
+                return 'Encumbered'
+        elif input_string == 'Unnamed: 13':
+                return 'Expensed'
         
         else:
                 return input_string  # Return the original string if no match is found
