@@ -132,7 +132,7 @@ class BudgetData: #the following class declaration contains budget object type f
     }, 
 },
 
-  'Add Univ Costs': {
+  'Additional University Costs': {
         'FF & E':{
             'At Construction Budget': 'value1',
             'Current Budget': 'value2',
@@ -208,7 +208,7 @@ class BudgetData: #the following class declaration contains budget object type f
 
     },  
 },
-'Contingency': {
+'Contingency Funds': {
         'Contingency, Design Phase':{
             'At Construction Budget': 'value1',
             'Current Budget': 'value2',
@@ -302,6 +302,7 @@ class BudgetData: #the following class declaration contains budget object type f
             else:
                 return False  # Key not found
         current_dict[path[-1]] = value
+       
         return True
         
     def replace_value(self,input_string):
