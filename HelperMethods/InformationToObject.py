@@ -67,13 +67,13 @@ def process_csv_data(new_csv_data, name_of_the_project):
                     #print(sub_section_value) 
                 if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget','Appropriated Budget','Budget Adjustments','Adjusted Budget']:
                     budgetData.set_value([name_of_the_project, section_value, sub_section_value, column_field_value], value)
-                    print([name_of_the_project, section_value, sub_section_value, column_field_value])
-                    print(value)
+                    #print([name_of_the_project, section_value, sub_section_value, column_field_value])
+                    #print(value)
                     #print(name_of_the_project + " "+ section_value + sub_section_value + " ")
                     #print(name_of_the_project)
                    # print(project_name,section_value, sub_section_value)
                     #print(value)
-                    print(budgetData)
+                    #print(budgetData.data)
     
 
     return budgetData
