@@ -1,9 +1,11 @@
 data  = {
-    'Land Acquisition': {
-        'Land Acquisition':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+
+ 'Land Acquisition': {
+        'CLAC':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -11,114 +13,128 @@ data  = {
 
     }},
     'Construction Costs': {
-        'New Construction Shell/Core':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+        'CCON':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
-            'Uncommitted Budget':''
+            'Uncommitted Budget':'' 
 
 
     },
-     'Renovation':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+     'CREN':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Special Fixed Equipment':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CSFE':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Site Development / Utilities Extensions':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CSDV':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
+            'Expensed':'',
+            'Anticipated Costs':'',
+            'Uncommitted Budget':''
+
+    },  'CPKL':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Landscaping / Signage':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CPKL':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Permits':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CDEM':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Demolition':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CHMA':{
+
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
-
-
-    },  'Hazardous Materials Abatement / Testing':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
-            'Expensed':'',
-            'Anticipated Costs':'',
-            'Uncommitted Budget':''
-
 
     },  
 },
 'Consultants': {
-        'Construction Mgr':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+        'CCMG':{
+
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
-
 
     },
-     'Architect / Engineer':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+     'CARE':{
+
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Surveys and Tests':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CSRT':{
+
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Other':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'COTH':{
+
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -127,75 +143,79 @@ data  = {
     }, 
 },
 
-  'Add Univ Costs': {
-        'FF & E':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+  'Additional University Costs': {
+        'CFFE':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
     },
-     'IT / Telecommunications':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+     'CTCE':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'AV (Audio Visual)':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CTCE':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Security':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CTCE':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
+            'Expensed':'',
+            'Anticipated Costs':'',
+            'Uncommitted Budget':''
+
+    },  'CMIC':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
+            'Expensed':'',
+            'Anticipated Costs':'',
+            'Uncommitted Budget':''
+    },  'CADM':{
+          'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
+            'Expensed':'',
+            'Anticipated Costs':'',
+            'Uncommitted Budget':''
+
+    },  'PKRS':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Move-in Costs':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
-            'Expensed':'',
-            'Anticipated Costs':'',
-            'Uncommitted Budget':''
-
-
-    },  'Printing/Advertisement/Misc Admin':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
-            'Expensed':'',
-            'Anticipated Costs':'',
-            'Uncommitted Budget':''
-
-
-    },  'Parking Replacement Reserve':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
-            'Expensed':'',
-            'Anticipated Costs':'',
-            'Uncommitted Budget':''
-
-
-    },  'Facilities Support (FACMAN PO\'s Only)':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'CFSP':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -203,11 +223,12 @@ data  = {
 
     },  
 },
-'Contingency': {
+'Contingency Funds': {
         'Contingency, Design Phase':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -215,9 +236,10 @@ data  = {
 
     },
      'Contingency, Constr Phase':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -228,47 +250,50 @@ data  = {
 },
 
  'Fees': {
-        'Project Management Cost ( 5 % )':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+        'CPMF':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
     },
-     'FS  Fees ( 0.15 % )':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+     'FSPM':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'EH&S Fees ( 0.21 % )':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'EHSF':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
 
 
-    },  'Purchasing Fees ( 0.30 % )':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'PSPC':{
+            'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
-
-
-    },  'State Risk Mgt Ins ( 0.34 % )':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
-            'Encumbered': '',
+    },  'STRK':{
+           'Appropriated Budget': '',
+            'Budget Adjustments': '',
+            'Adjusted Budget': '',
+            'Encumbered':'',
             'Expensed':'',
             'Anticipated Costs':'',
             'Uncommitted Budget':''
@@ -276,22 +301,8 @@ data  = {
 
     },  
 }
-, 'Total Costs': {
-            'At Construction Budget': {
-                'total': ''},
 
-            'Current Budget':{
-                'total': ''
-            } ,
-            'Encumbered': {
-              'total' : '' },
-            'Expensed':{
-                'total': ''},
 
-            'Anticipated Costs':{
-                'total': ''},
-            'Uncommitted Budget':{
-                'total': ''}
-}
+
 
 }

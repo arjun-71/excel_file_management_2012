@@ -294,13 +294,7 @@ class BudgetData: #the following class declaration contains budget object type f
             'Anticipated Costs':'',
             'Uncommitted Budget':''
     },  'STRK':{
-           'Appropriated Budget': '',
-            'Budget Adjustments': '',
-            'Adjusted Budget': '',
-            'Encumbered':'',
-            'Expensed':'',
-            'Anticipated Costs':'',
-            'Uncommitted Budget':''
+           
 
 
     },  

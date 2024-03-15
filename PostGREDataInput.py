@@ -119,21 +119,33 @@ for i in range(0,1):
   #print(new_csv_data.head())
 
   # the following object created contains the lew object of type cost 
-  budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)  
+  budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
 
 
 
-  #print(budgetData.get_value(name_of_the_project))
-
+  print(budgetData.data[name_of_the_project])
 
   #checking the functionality of new csv generator engine
 
   #print(csv_schema.data)
 
+
+
+
+
+  #the error starts here
+  #print(csv_schema.data)
+
+
+
   resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
   print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
   df = pd.read_csv(resultant_file)
+
+  
+  #print(df.head(50))
+ 
 
   #print(df.head(30))
 
@@ -154,7 +166,9 @@ for i in range(0,1):
 
   # Loop through all rows in the DataFrame
   ##or fileName, budgetData in file_budget_mapping.items():
+
   budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
+  #print(budgetData.data[name_of_the_project])
   #print(budgetData.get_value(name_of_the_project))
       
   # Create an empty list to store values for 'Unnamed: 3'
@@ -166,10 +180,14 @@ for i in range(0,1):
   uncommitted_Total = 0
   total = 0.0
 
+  print(df.columns)
+
   for index, row in df.iterrows():                #figure this out please its irritating 
       column1_value = row['Land Acquisition']
-      column2_value = row['Land Acquisition.1']
-      column3_value = row['At Construction Budget']
+      column2_value = row['CLAC']
+      column3_value = row['Appropriated Budget']
+      
+      print([name_of_the_project,column1_value,column2_value,column3_value])
 
       if column3_value == "Expensed":
         

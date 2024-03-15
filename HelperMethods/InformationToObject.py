@@ -47,7 +47,7 @@ def process_csv_data(new_csv_data, name_of_the_project):
                 
                 column_field_value = budgetData.replace_value(column_name)
 
-                print(column_field_value)                #
+                #print(column_field_value)                #
                 #print(column_field_value)
                 
                 if column_name == "*":
