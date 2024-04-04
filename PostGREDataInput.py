@@ -17,11 +17,23 @@ import os
 import HelperMethods.resultant_file as rsf
 import HelperMethods.final_output_file as fsn
 import HelperMethods.file_handling_method as fhm
+import sys
+#from dataBody import BudgetData
+
+
 
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
-engine = create_engine(databaseConnectionString)   
+engine = create_engine(databaseConnectionString)  
+
+BudgetData_directory = os.path.dirname(os.path.realpath('dataBody.py'))
+print(BudgetData_directory)
+
+sys.path.append(BudgetData_directory)
+
+#from dataBody import BudgetData
+
 
 #create a dictionary with the new csv file name as the key value and the corresponding budgetData created as the value pair
 file_budget_mapping = {}
@@ -121,7 +133,11 @@ for i in range(0,1):
   # the following object created contains the lew object of type cost 
 
   budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
+  #budgetData = BudgetData('LSC SOLS Collaborative Classroom')  # Creating an instance of the BudgetData class
+  result = budgetData.data[name_of_the_project].get('Additional University Costs')
+  print(result)
 
+   
 
 
 
@@ -175,6 +191,10 @@ for i in range(0,1):
   ##or fileName, budgetData in file_budget_mapping.items():
 
   budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping   just swapping the value
+  #print(budgetData['LSC SOLS Collaborative Classroom']['Land Acquisition']['CLAC'])
+
+
+ 
 
 
 
@@ -216,7 +236,7 @@ for i in range(0,1):
       
         
 
-      if column3_value == "Expensed":
+      if column3_value == "Expensed" or column3_value ==  'Appropriated Budget' or column3_value ==  'Budget Adjustments'  or  column3_value == 'Adjusted Budget' or  column3_value == 'Encumbered' or column3_value ==  'Anticipated Costs' or  column3_value == 'Uncommitted Budget':
         
 
 
@@ -227,10 +247,11 @@ for i in range(0,1):
         #print(value)
 
         #print(budgetData.data)
-        value = budgetData.data.get((name_of_the_project, column1_value, column2_value, column3_value), None)
+        value = budgetData.data[name_of_the_project].get(column1_value).get(column2_value).get(column3_value)
         if value is not None:
 
-          print("Value found:", value)
+          print([name_of_the_project, column1_value, column2_value, column3_value])
+          print(value)
         else:
 
 
