@@ -69,6 +69,8 @@ def process_csv_data(new_csv_data, name_of_the_project):
                     budgetData.set_value([name_of_the_project, section_value, sub_section_value, column_field_value], value)
                     #print([name_of_the_project, section_value, sub_section_value, column_field_value])
                     #print(value)
+                    #print([name_of_the_project, section_value, sub_section_value, column_field_value])
+                    #print(value)
                     #print(name_of_the_project + " "+ section_value + sub_section_value + " ")
                     #print(name_of_the_project)
                    # print(project_name,section_value, sub_section_value)

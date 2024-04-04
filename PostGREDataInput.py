@@ -108,7 +108,7 @@ for i in range(0,1):
   # Read and print the first few rows of the new CSV file
   new_csv_data = pd.read_csv(new_csv_file_name)                                             
   # Print rows 6 to 11 of the DataFrame
-  print("Rows 6 to 11 of the DataFrame:")
+  #print("Rows 6 to 11 of the DataFrame:")
   #print(new_csv_data.iloc[5:11])
 
  
@@ -119,11 +119,13 @@ for i in range(0,1):
   #print(new_csv_data.head())
 
   # the following object created contains the lew object of type cost 
+
   budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
 
 
 
-  print(budgetData.data[name_of_the_project])
+
+  #print(budgetData.data[name_of_the_project])
 
   #checking the functionality of new csv generator engine
 
@@ -143,6 +145,9 @@ for i in range(0,1):
 
   df = pd.read_csv(resultant_file)
 
+
+  print(df.head(50))
+
   
   #print(df.head(50))
  
@@ -158,7 +163,9 @@ for i in range(0,1):
   #the following dictionary contains the budget data schema for every csv file
   file_budget_mapping[new_csv_file_name] = budgetData
 
-  #print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+
+
+  #print(budget_data_list[0].get_value([name_of_the_project]))
 
 
   # Read the CSV file into a DataFrame
@@ -167,7 +174,16 @@ for i in range(0,1):
   # Loop through all rows in the DataFrame
   ##or fileName, budgetData in file_budget_mapping.items():
 
-  budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
+  budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping   just swapping the value
+
+
+
+ 
+
+
+  print("checker")
+
+  #print(budgetData.data[name_of_the_project])
   #print(budgetData.data[name_of_the_project])
   #print(budgetData.get_value(name_of_the_project))
       
@@ -180,20 +196,50 @@ for i in range(0,1):
   uncommitted_Total = 0
   total = 0.0
 
-  print(df.columns)
+  #print(df.columns)
 
   for index, row in df.iterrows():                #figure this out please its irritating 
       column1_value = row['Land Acquisition']
       column2_value = row['CLAC']
       column3_value = row['Appropriated Budget']
+
+      #print([name_of_the_project, column1_value, column2_value, column3_value])
+
+
+    
+
+
       
-      print([name_of_the_project,column1_value,column2_value,column3_value])
+      #print([name_of_the_project,column1_value,column2_value,column3_value])        #the code has been sorted till here where it tries to get the values from the dictionary
+      #prin
+      # t(column3_value)
+      
+        
 
       if column3_value == "Expensed":
         
-        value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
-        checker = 0
+
+
         
+
+        
+        #value = budgetData.data[name_of_the_project, column1_value, column2_value, column3_value]
+        #print(value)
+
+        #print(budgetData.data)
+        value = budgetData.data.get((name_of_the_project, column1_value, column2_value, column3_value), None)
+        if value is not None:
+
+          print("Value found:", value)
+        else:
+
+
+           print("Value not found for the given key:", (name_of_the_project, column1_value, column2_value, column3_value))
+
+       
+
+        checker = 0
+        value = None
         if value is not None and value.strip() != '':
           checker = 0
           try:
