@@ -17,11 +17,23 @@ import os
 import HelperMethods.resultant_file as rsf
 import HelperMethods.final_output_file as fsn
 import HelperMethods.file_handling_method as fhm
+import sys
+#from dataBody import BudgetData
+
+
 
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
-engine = create_engine(databaseConnectionString)   
+engine = create_engine(databaseConnectionString)  
+
+BudgetData_directory = os.path.dirname(os.path.realpath('dataBody.py'))
+print(BudgetData_directory)
+
+sys.path.append(BudgetData_directory)
+
+#from dataBody import BudgetData
+
 
 #create a dictionary with the new csv file name as the key value and the corresponding budgetData created as the value pair
 file_budget_mapping = {}
@@ -108,7 +120,7 @@ for i in range(0,1):
   # Read and print the first few rows of the new CSV file
   new_csv_data = pd.read_csv(new_csv_file_name)                                             
   # Print rows 6 to 11 of the DataFrame
-  print("Rows 6 to 11 of the DataFrame:")
+  #print("Rows 6 to 11 of the DataFrame:")
   #print(new_csv_data.iloc[5:11])
 
  
@@ -119,21 +131,42 @@ for i in range(0,1):
   #print(new_csv_data.head())
 
   # the following object created contains the lew object of type cost 
-  budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)  
+
+  budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
+  #budgetData = BudgetData('LSC SOLS Collaborative Classroom')  # Creating an instance of the BudgetData class
+  result = budgetData.data[name_of_the_project].get('Additional University Costs')
+  print(result)
+
+   
 
 
 
-  #print(budgetData.get_value(name_of_the_project))
-
+  #print(budgetData.data[name_of_the_project])
 
   #checking the functionality of new csv generator engine
 
   #print(csv_schema.data)
 
+
+
+
+
+  #the error starts here
+  #print(csv_schema.data)
+
+
+
   resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
   print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
   df = pd.read_csv(resultant_file)
+
+
+  print(df.head(50))
+
+  
+  #print(df.head(50))
+ 
 
   #print(df.head(30))
 
@@ -146,7 +179,9 @@ for i in range(0,1):
   #the following dictionary contains the budget data schema for every csv file
   file_budget_mapping[new_csv_file_name] = budgetData
 
-  #print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+
+
+  #print(budget_data_list[0].get_value([name_of_the_project]))
 
 
   # Read the CSV file into a DataFrame
@@ -154,7 +189,22 @@ for i in range(0,1):
 
   # Loop through all rows in the DataFrame
   ##or fileName, budgetData in file_budget_mapping.items():
-  budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
+
+  budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping   just swapping the value
+  #print(budgetData['LSC SOLS Collaborative Classroom']['Land Acquisition']['CLAC'])
+
+
+ 
+
+
+
+ 
+
+
+  print("checker")
+
+  #print(budgetData.data[name_of_the_project])
+  #print(budgetData.data[name_of_the_project])
   #print(budgetData.get_value(name_of_the_project))
       
   # Create an empty list to store values for 'Unnamed: 3'
@@ -166,16 +216,51 @@ for i in range(0,1):
   uncommitted_Total = 0
   total = 0.0
 
+  #print(df.columns)
+
   for index, row in df.iterrows():                #figure this out please its irritating 
       column1_value = row['Land Acquisition']
-      column2_value = row['Land Acquisition.1']
-      column3_value = row['At Construction Budget']
+      column2_value = row['CLAC']
+      column3_value = row['Appropriated Budget']
 
-      if column3_value == "Expensed":
+      #print([name_of_the_project, column1_value, column2_value, column3_value])
+
+
+    
+
+
+      
+      #print([name_of_the_project,column1_value,column2_value,column3_value])        #the code has been sorted till here where it tries to get the values from the dictionary
+      #prin
+      # t(column3_value)
+      
         
-        value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+
+      if column3_value == "Expensed" or column3_value ==  'Appropriated Budget' or column3_value ==  'Budget Adjustments'  or  column3_value == 'Adjusted Budget' or  column3_value == 'Encumbered' or column3_value ==  'Anticipated Costs' or  column3_value == 'Uncommitted Budget':
+        
+
+
+        
+
+        
+        #value = budgetData.data[name_of_the_project, column1_value, column2_value, column3_value]
+        #print(value)
+
+        #print(budgetData.data)
+        value = budgetData.data[name_of_the_project].get(column1_value).get(column2_value).get(column3_value)
+        if value is not None:
+
+          print([name_of_the_project, column1_value, column2_value, column3_value])
+          print(value)
+        else:
+
+
+           print("Value not found for the given key:", (name_of_the_project, column1_value, column2_value, column3_value))
+
+       
+
         checker = 0
-        
+        value = None
         if value is not None and value.strip() != '':
           checker = 0
           try:

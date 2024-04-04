@@ -6,6 +6,8 @@ def generate_project_csv(project_name, data, project_code):
     def flatten_dict(dictionary, header, rows):
         for key, value in dictionary.items():
             if isinstance(value, dict):
+                #print(key)
+                #print(value)
                 header.append(key)
                 flatten_dict(value, header, rows)
                 header.pop()
