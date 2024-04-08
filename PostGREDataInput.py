@@ -248,15 +248,37 @@ for i in range(0,1):
 
         #print(budgetData.data)
         value = budgetData.data[name_of_the_project].get(column1_value).get(column2_value).get(column3_value)
-        if value is not None:
+        
+        if value is not None or value != '  ':
 
-          print([name_of_the_project, column1_value, column2_value, column3_value])
-          print(value)
-        else:
+        
+          try:
+
+            # Assuming value is the variable you're trying to convert to float
+            if value.strip():  # Check if the string is not empty after stripping whitespace
+              print([name_of_the_project, column1_value, column2_value, column3_value])
+              float_value = float(value)
+              df = pd.DataFrame([[name_of_the_project, column1_value, column2_value, column3_value, float_value]],
+                          columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
+              file_name = "result.csv"
+              current_folder = os.getcwd()
+              current_folder_destination = os.path.join(current_folder, 'resulting_file')
+              resulting_file = os.path.join(current_folder_destination, file_name)
+
+        # Append the DataFrame to the resulting CSV file or create a new file if it doesn't exist
+              df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
 
 
-           print("Value not found for the given key:", (name_of_the_project, column1_value, column2_value, column3_value))
+            else:
 
+             continue
+          except ValueError:
+
+
+            print("Could not convert string to float:", value)
+
+                
+       
        
 
         checker = 0
@@ -265,7 +287,7 @@ for i in range(0,1):
           checker = 0
           try:
               decimal_value = float(value)
-              #print(decimal_value)
+              print(decimal_value)
           except ValueError:
               checker = 1
         else:
@@ -350,13 +372,13 @@ for i in range(0,1):
 
 
 
-  column_headings = ["Project_Name,Project_Number,Total_Expense,sumz"]
-  data = [
-      [name_of_the_project, project_code, total, total]
-  ]
+  #column_headings = ["Project_Name,Project_Number,Total_Expense,sumz"]
+  #data = [
+   #   [name_of_the_project, project_code, total, total]
+  #]
 
   # Define your column headings as separate elements in a list
-  column_headings = ["Project_Name", "Project_Number", "Total_Expense", "Sum"]
+  #column_headings = ["Project_Name", "Project_Number", "Total_Expense", "Sum"]
 
   # Define your data with actual values
 
@@ -365,11 +387,16 @@ for i in range(0,1):
       [name_of_the_project, project_code, total, total]
   ]
 
-  file_name = "result.csv"
 
-  current_folder = os.getcwd()
-  current_folder_destination = os.path.join(current_folder, 'resulting_file')
-  resulting_file = os.path.join(current_folder_destination, file_name)
+  #print(data)
+
+  #file_name = "result.csv"
+
+  #current_folder = os.getcwd()
+  #current_folder_destination = os.path.join(current_folder, 'resulting_file')
+  #resulting_file = os.path.join(current_folder_destination, file_name)
+
+  #print(resulting_file)
   #print(resulting_file)
 
   #file_path = current_folder_destination + "/"+"resulting_file"
