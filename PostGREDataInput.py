@@ -135,7 +135,7 @@ for i in range(0,1):
   budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
   #budgetData = BudgetData('LSC SOLS Collaborative Classroom')  # Creating an instance of the BudgetData class
   result = budgetData.data[name_of_the_project].get('Additional University Costs')
-  print(result)
+  #print(result)
 
    
 
@@ -162,7 +162,7 @@ for i in range(0,1):
   df = pd.read_csv(resultant_file)
 
 
-  print(df.head(50))
+  #print(df.head(50))
 
   
   #print(df.head(50))
@@ -249,7 +249,7 @@ for i in range(0,1):
         #print(budgetData.data)
         value = budgetData.data[name_of_the_project].get(column1_value).get(column2_value).get(column3_value)
         
-        if value is not None or value != '  ':
+        if value is not None or value != '  ' :
 
         
           try:
@@ -258,8 +258,10 @@ for i in range(0,1):
             if value.strip():  # Check if the string is not empty after stripping whitespace
               print([name_of_the_project, column1_value, column2_value, column3_value])
               float_value = float(value)
-              df = pd.DataFrame([[name_of_the_project, column1_value, column2_value, column3_value, float_value]],
-                          columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
+              if  float_value != 0:
+                df = pd.DataFrame([[project_code, column1_value, column2_value, column3_value, float_value]],
+                            columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
+                
               file_name = "result.csv"
               current_folder = os.getcwd()
               current_folder_destination = os.path.join(current_folder, 'resulting_file')
