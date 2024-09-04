@@ -1,15 +1,14 @@
 from sqlalchemy import create_engine
 import psycopg2
 import pandas as pd
-import HelperMethods.FilePathReturn as  fp
+import HelperMethods.FilePathReturn as fp
 import numpy as np
 import HelperMethods.DatabaseString as dbs
 import HelperMethods.ExcelToCsv as converter
 import HelperMethods.csv_name_changer as nameChanger
-import dataManagement.dataBody as dsn 
-import dataManagement.dataBody
+import dataManagement.dataBody as dsn
 import HelperMethods.InformationToObject as objectInserter
-import HelperMethods.header2 as hds     
+import HelperMethods.header2 as hds
 import HelperMethods.header3 as hds2
 import csv
 import dataManagement.csv_file_schema as csv_schema
@@ -18,445 +17,292 @@ import HelperMethods.resultant_file as rsf
 import HelperMethods.final_output_file as fsn
 import HelperMethods.file_handling_method as fhm
 import sys
-#from dataBody import BudgetData
+import HelperMethods.returnFolderCount as rtn
+from sqlalchemy import create_engine
+import pandas as pd
+import numpy as np
+import os
+import csv
+import sys
+import HelperMethods.FilePathReturn as fp
+import HelperMethods.DatabaseString as dbs
+import HelperMethods.ExcelToCsv as converter
+import HelperMethods.csv_name_changer as nameChanger
+import HelperMethods.InformationToObject as objectInserter
+import HelperMethods.header2 as hds
+import HelperMethods.header3 as hds2
+import HelperMethods.file_handling_method as fhm
+import HelperMethods.resultant_file as rsf
+import dataManagement.csv_file_schema as csv_schema
 
 
-
-
-# Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
-engine = create_engine(databaseConnectionString)  
+engine = create_engine(databaseConnectionString)
 
 BudgetData_directory = os.path.dirname(os.path.realpath('dataBody.py'))
-print(BudgetData_directory)
-
 sys.path.append(BudgetData_directory)
 
-#from dataBody import BudgetData
-
-
-#create a dictionary with the new csv file name as the key value and the corresponding budgetData created as the value pair
 file_budget_mapping = {}
+budget_data_list = []
 
-# Create a list to store BudgetData objects
-budget_data_list = []        #declare this as global variable     
-
-
-
-#name of the resultant csv file
 resultant_file = 'resultant_file.csv'
 
-#alter the addresses based upon the aws lamda function 
-
-#file entry point
-#the function for entry of the file 
+year_2012 = "2012"
+year_2013 = "2013"
 
 
+#attach a s3 bucket
+#based upon the s3 bucket folder, the year will be determined and so what script to be executed and all that as well
+#the resulting csv file upon execution will be stored in the destination s3 bucket
+
+    #the function works as such
+    #the incoming file now matter what has to read based upon the standard nomenclature 
+    #so change the uploaded file name first from the frontend itself
+
+def processing2013File(year: str):
+
+    if year == "2013":
+        count = rtn.count_files_in_folder('/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2013')      #the following functions counts the number of files in 2013 file
+    
+    file_list = fhm.addFile(count,"2013")            #the following adds the excel files in the list of files for being worked upon
+    print(len(file_list))
+
+    for i in range(len(file_list)):
+       print("the name of the file list is")
+       current_directory = os.getcwd()
+       print(current_directory)
+       frontend_folder = "frontend"
+       uploads_folder = "uploads"
+       year = "2013"
+       excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder,year, file_list[i])
+       print(excel_file_path)                           #the following is the file location address on the local machine for 2013 year files
+       
+         
+       
+       
+       csv_data = converter.fileConverter(excel_file_path)
+       first_row = csv_data.iloc[1]
+       first_column = csv_data.iloc[:, 0]
+
+       name_in_the_file = first_row.iloc[0]
+       project_code = csv_data.columns[1]
+       parts = project_code.split('/')
+       if len(parts) >= 2:
+
+            name_of_the_project = parts[0].strip()
+            project_code = parts[1].strip()
+       else:
+            name_of_the_project = None
+            project_code = None
+
+       new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
+       print("the new resulting csv file name")
+       print(new_csv_file_name)           #reading successfully from the given address
+       csv_data.to_csv(new_csv_file_name, index=False)
+   
+
+       new_csv_data = pd.read_csv(new_csv_file_name)
+
+       budgetData = objectInserter.process_csv_data_2013(new_csv_data, name_of_the_project)
+       result = budgetData.data[name_of_the_project].get('Additional University Costs')
+
+       print(result)
+
+       resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
+
+    
+
+       print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
 
 
-
-#extracting the file path
-
-file_list = fhm.addFile(1)           #the following will not work as we are not changing the file name itself
-print(file_list)
-
-for i in range(0,1):      
-
-  filePath = fp.get_excel_file_path(file_list[i])
-  print(filePath)
-  
+       df = pd.read_csv(resultant_file)
 
 
-
-
-
-  
-  #converting excel file to csv file
-  #start here
-
-  csv = converter.fileConverter(filePath)       #this is working
-  #print(csv.head())
-
-
-  first_row = csv.iloc[1]
- # print(first_row)
-  first_column = csv.iloc[:, 0]
-  #print(first_column)
-
-  #the following variable contains the name mentioned in the file
-  name_in_the_file =first_row.iloc[0] 
-  print(name_in_the_file)
-  #name_of_the_project = csv.columns[3]
-  #print(name_of_the_project)              
-  project_code = csv.columns[1]         #the following splits the name of the file into three segments
-  parts = project_code.split('/')
-  if len(parts) >= 2:
-    name_of_the_project = parts[0].strip()  # Get the first part as name_of_the_project
-    project_code = parts[1].strip()  # Get the second part as project_code
-  else:
-    name_of_the_project = None  # Handle the case where there are not enough parts
-    project_code = None
-  
-
-
-
-  # Generate a new CSV file name without spaces
-  new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
-  #print(new_csv_file_name)
-  print("the new resulting csv file name")
-  #print(new_csv_file_name)
-
-
-  #update the name in the folder as well 
-
-  # Save the DataFrame to the new CSV file
-  csv.to_csv(new_csv_file_name, index=False)
-
-
-
-  #print("the first five rows of the given dataframe 2")
- 
-  # Read and print the first few rows of the new CSV file
-  new_csv_data = pd.read_csv(new_csv_file_name)                                             
-  # Print rows 6 to 11 of the DataFrame
-  #print("Rows 6 to 11 of the DataFrame:")
-  #print(new_csv_data.iloc[5:11])
-
- 
-  
-  
-
-
-  #print(new_csv_data.head())
-
-  # the following object created contains the lew object of type cost 
-
-  budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project) #the process has been sorted till this part 
-  #budgetData = BudgetData('LSC SOLS Collaborative Classroom')  # Creating an instance of the BudgetData class
-  result = budgetData.data[name_of_the_project].get('Additional University Costs')
-  print(result)
+    print("the value of the given csv file is")
 
    
 
 
 
-  #print(budgetData.data[name_of_the_project])
+    fourth_column = df.iloc[:, 3]
+    budget_data_list.append(budgetData)
+    file_budget_mapping[new_csv_file_name] = budgetData
 
-  #checking the functionality of new csv generator engine
-
-  #print(csv_schema.data)
-
-
-
-
-
-  #the error starts here
-  #print(csv_schema.data)
-
-
-
-  resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
-  print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
-
-  df = pd.read_csv(resultant_file)
-
-
-  print(df.head(50))
-
-  
-  #print(df.head(50))
- 
-
-  #print(df.head(30))
-
-  fourth_column = df.iloc[:, 3] 
-  #print(fourth_column)
-
-  #the following adds and maps the new object created and maps it to the required file name
-  budget_data_list.append(budgetData)
-
-  #the following dictionary contains the budget data schema for every csv file
-  file_budget_mapping[new_csv_file_name] = budgetData
-
-
-
-  #print(budget_data_list[0].get_value([name_of_the_project]))
-
-
-  # Read the CSV file into a DataFrame
-
-
-  # Loop through all rows in the DataFrame
-  ##or fileName, budgetData in file_budget_mapping.items():
-
-  budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping   just swapping the value
-  #print(budgetData['LSC SOLS Collaborative Classroom']['Land Acquisition']['CLAC'])
-
-
- 
-
-
-
- 
-
-
-  print("checker")
-
-  #print(budgetData.data[name_of_the_project])
-  #print(budgetData.data[name_of_the_project])
-  #print(budgetData.get_value(name_of_the_project))
-      
-  # Create an empty list to store values for 'Unnamed: 3'
-  unnamed_3_values = []
-  current_Budget_Total = 0
-  encumbered_Total = 0
-  Expensed_Total = 0
-  anticipated_Total = 0
-  uncommitted_Total = 0
-  total = 0.0
-
-  #print(df.columns)
-
-  for index, row in df.iterrows():                #figure this out please its irritating 
-      column1_value = row['Land Acquisition']
-      column2_value = row['CLAC']
-      column3_value = row['Appropriated Budget']
-
-      #print([name_of_the_project, column1_value, column2_value, column3_value])
-
+    budgetData = file_budget_mapping[new_csv_file_name]
+    print("checker")
 
     
 
+    unnamed_3_values = []
+    total = 0.0
 
-      
-      #print([name_of_the_project,column1_value,column2_value,column3_value])        #the code has been sorted till here where it tries to get the values from the dictionary
-      #prin
-      # t(column3_value)
-      
-        
+    for index, row in df.iterrows():
 
-      if column3_value == "Expensed" or column3_value ==  'Appropriated Budget' or column3_value ==  'Budget Adjustments'  or  column3_value == 'Adjusted Budget' or  column3_value == 'Encumbered' or column3_value ==  'Anticipated Costs' or  column3_value == 'Uncommitted Budget':
-        
+        column1_value = row['Land Acquisition']
+        column2_value = row['CLAC']
+        column3_value = row['Appropriated Budget']
 
+        if column3_value in ["Expensed", 'Appropriated Budget', 'Budget Adjustments', 'Adjusted Budget', 'Encumbered', 'Anticipated Costs', 'Uncommitted Budget']:
+            value = budgetData.data[name_of_the_project].get(column1_value, {}).get(column2_value, {}).get(column3_value, None)
+            
+            if value:
+                try:
+                    if value.strip():
+                        float_value = float(value)
+                        print(float_value)
+                        if float_value >= 0.0:
+                            df = pd.DataFrame([[project_code, column1_value, column2_value, column3_value, float_value]],
+                                            columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
 
-        
+                            file_name = "result.csv"
+                            current_folder = os.getcwd()
+                            current_folder_destination = os.path.join(current_folder, 'resulting_file')
+                            resulting_file = os.path.join(current_folder_destination, file_name)
 
-        
-        #value = budgetData.data[name_of_the_project, column1_value, column2_value, column3_value]
-        #print(value)
+                            df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
 
-        #print(budgetData.data)
-        value = budgetData.data[name_of_the_project].get(column1_value).get(column2_value).get(column3_value)
-        
-        if value is not None or value != '  ':
-
-        
-          try:
-
-            # Assuming value is the variable you're trying to convert to float
-            if value.strip():  # Check if the string is not empty after stripping whitespace
-              print([name_of_the_project, column1_value, column2_value, column3_value])
-              float_value = float(value)
-              df = pd.DataFrame([[name_of_the_project, column1_value, column2_value, column3_value, float_value]],
-                          columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
-              file_name = "result.csv"
-              current_folder = os.getcwd()
-              current_folder_destination = os.path.join(current_folder, 'resulting_file')
-              resulting_file = os.path.join(current_folder_destination, file_name)
-
-        # Append the DataFrame to the resulting CSV file or create a new file if it doesn't exist
-              df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
-
-
-            else:
-
-             continue
-          except ValueError:
-
-
-            print("Could not convert string to float:", value)
-
-                
-       
-       
+                except ValueError:
+                    print("Could not convert string to float:", value)
 
         checker = 0
         value = None
         if value is not None and value.strip() != '':
-          checker = 0
-          try:
-              decimal_value = float(value)
-              print(decimal_value)
-          except ValueError:
-              checker = 1
+            checker = 0
+            try:
+                decimal_value = float(value)
+                print(decimal_value)
+            except ValueError:
+                checker = 1
         else:
+            checker = 2
 
-          checker = 2
-        #find the value of the five column values
         if checker == 0:
-          
+            total += decimal_value
+            df.at[index, 'Unnamed: 3'] = decimal_value
 
+    current_folder = os.getcwd()
+    current_folder_destination = os.path.join(current_folder, 'resulting_file')
+    file_path = os.path.join(current_folder_destination, resultant_file)
 
+    df.to_csv(file_path, index=False)
 
-        #if(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-          #print(column1_value, column2_value, column3_value)
-          #print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-          total = total + decimal_value
-          #print(column1_value+" "+column2_value+" "+column3_value)
-          df.at[index, 'Unnamed: 3'] = decimal_value    
+    data = [[name_of_the_project, project_code, total, total]]
+    rsf.add_data_to_existing_csv(data)
 
-          #value_str = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
-    
+def processing2012File(year: str):
 
-  # Check if the string is not empty and is a valid numeric value
-          #if value_str.strip() != '':
-            # integer_value = float(value_str)
-            #  current_Budget_Total+=integer_value
-        # print(budgetData.get_value([name_of_the_project, column1_value, column2_value,column3_value]))
+    if year == "2012":
+        count = rtn.count_files_in_folder("/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2012")        #the following function counts the number of files in the given folder address
+
+    print(count)
+
+    file_list = fhm.addFile(count,"2012")            #the following adds the excel files in the list of files for being worked upon
+    for i in range(len (file_list)):
+        #add the code to get the project name initially to be put into the resultant file
+        print("the name of the file list is")
+
+        current_directory = os.getcwd()
+        print(current_directory)
+        frontend_folder = "frontend"
+        uploads_folder = "uploads"
+        year = "2012"
+        excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder,year, file_list[i])
+        print(excel_file_path)
+        csv1 = converter.fileConverter(excel_file_path)
+        print(csv1.head())
+        project_code = csv1.columns[1]
+        parts = project_code.split('/')
+        if len(parts) >= 2:
+            name_of_the_project = parts[0].strip()
+            project_code = parts[1].strip()
+        else:
+            name_of_the_project = None
+            project_code = None
         
-        # current_Budget_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-    # if(column3_value == 'Encumbered' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-      #   encumbered_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-    # if(column3_value == 'Expensed' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-      #   Expensed_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-    #  if(column3_value == 'Anticipated Costs' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-    #     anticipated_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-    # if(column3_value == 'Uncommitted Budget' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-      #    uncommitted_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-      
-      
-      #print(column1_value, column2_value, column3_value)        
 
-      # Calculate the value you want to set for 'Unnamed: 3' based on budgetData
-      #unnamed_3_value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
-      
-      # Append the calculated value to the list
-      #unnamed_3_values.append(unnamed_3_value)
+        filePath = fp.get_excel_file_path(file_list[i], i+1,year)           #add condition that rather than having the  fixed, add flexibility by finding the key word 2012 and also takes the year as a function parameter
+        
 
-  # Assign the list of 'Unnamed: 3' values to the DataFrame
+        csv = converter.fileConverter(filePath)
 
+        first_row = csv.iloc[1]
+        first_column = csv.iloc[:, 0]
+
+        name_in_the_file = first_row.iloc[0]
+        project_code = csv.columns[1]
+        parts = project_code.split('/')
+        if len(parts) >= 2:
+            name_of_the_project = parts[0].strip()
+            project_code = parts[1].strip()
+        else:
+            name_of_the_project = None
+            project_code = None
+
+        new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
     
+        csv.to_csv(new_csv_file_name, index=False)     
 
-  # Print the first few rows of the DataFrame
+        new_csv_data = pd.read_csv(new_csv_file_name)
 
-  #print(df.head(60))   
-  #print(resultant_file)
+        budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)       #for 2012 add for 2013 also
+        result = budgetData.data[name_of_the_project].get('Additional University Costs')
 
-  #print(uncommitted_Total)
+        resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
+        df = pd.read_csv(resultant_file)
 
-  #print(total)
+        fourth_column = df.iloc[:, 3]
+        budget_data_list.append(budgetData)
+        file_budget_mapping[new_csv_file_name] = budgetData
 
+        budgetData = file_budget_mapping[new_csv_file_name]
 
-  #create the resultant file and add to the final output file here
+        unnamed_3_values = []
+        total = 0.0
 
+        for index, row in df.iterrows():
+            column1_value = row['Land Acquisition']
+            column2_value = row['CLAC']
+            column3_value = row['Appropriated Budget']
 
-
-  current_folder = os.getcwd()   
-  current_folder_destination = os.path.join(current_folder,'resulting_file')
-
-
-
-
-  file_path = current_folder_destination + "/"+resultant_file
-
-
-  # Save the DataFrame to the specified file path
-  df.to_csv(file_path, index=False)  # index=False to avoid saving the index column
-
-
-  #create the file
-  #call the global scope file declared in the function 
-  #in the function write the data
-  #return the updated file back to the main file
-
-
-
-  #column_headings = ["Project_Name,Project_Number,Total_Expense,sumz"]
-  #data = [
-   #   [name_of_the_project, project_code, total, total]
-  #]
-
-  # Define your column headings as separate elements in a list
-  #column_headings = ["Project_Name", "Project_Number", "Total_Expense", "Sum"]
-
-  # Define your data with actual values
-
-
-  data = [
-      [name_of_the_project, project_code, total, total]
-  ]
-
-
-  #print(data)
-
-  #file_name = "result.csv"
-
-  #current_folder = os.getcwd()
-  #current_folder_destination = os.path.join(current_folder, 'resulting_file')
-  #resulting_file = os.path.join(current_folder_destination, file_name)
-
-  #print(resulting_file)
-  #print(resulting_file)
-
-  #file_path = current_folder_destination + "/"+"resulting_file"
-
-  rsf.add_data_to_existing_csv(data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Process or print the values as needed
-   #getting the corresponsding value from the budgetData
-    
-
-
-
-
-
-
-     
-     
-     
-
-
-#print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
-            
-            #use the insert function here please
-#print(project_code_value)
-#print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades']))
-#print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget']))  # This will print 'new_value'
-
+            if column3_value in ["Expensed", 'Appropriated Budget', 'Budget Adjustments', 'Adjusted Budget', 'Encumbered', 'Anticipated Costs', 'Uncommitted Budget']:
+                value = budgetData.data[name_of_the_project].get(column1_value, {}).get(column2_value, {}).get(column3_value)
                 
-#print(field_List)  #the following list contains the list of all major fields for the above costs  
+                if value and value.strip():
+                    try:
+                        float_value = float(value)
+                        df = pd.DataFrame([[name_of_the_project, column1_value, column2_value, column3_value, float_value]],
+                                        columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
+                        file_name = "result.csv"
+                        current_folder = os.getcwd()
+                        current_folder_destination = os.path.join(current_folder, 'resulting_file')
+                        resulting_file = os.path.join(current_folder_destination, file_name)
+                        df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
+                    except ValueError:
+                        pass
 
- 
+            checker = 0
+            value = None
+            if value and value.strip():
+                checker = 0
+                try:
+                    decimal_value = float(value)
+                except ValueError:
+                    checker = 1
+            else:
+                checker = 2
+            
+            if checker == 0:
+                total += decimal_value
+                df.at[index, 'Unnamed: 3'] = decimal_value
 
-#creating a dictionary data structure for storing  values 
+        current_folder = os.getcwd()
+        current_folder_destination = os.path.join(current_folder, 'resulting_file')         #the following has the resulting file
+        file_path = os.path.join(current_folder_destination, resultant_file)
+        df.to_csv(file_path, index=False)
 
+        data = [[name_of_the_project, project_code, total, total]]
+        rsf.add_data_to_existing_csv(data)
 
-# def extract_and_insert_single_sheet(sheet_name, excel_file, table_name):
-#     df = pd.read_excel(excel_file, sheet_name)
-#     df.to_sql(name=table_name, con=engine, if_exists='append', index=False)
-
-# # Replace 'main.xlsx' with the actual path to your Excel file
-# excel_file_path = filePath
-# sheet_name_to_process = 'Sheet1'  # Replace with the desired sheet name
-# table_name_to_insert = dbs.table_name  # Replace with the desired table name
-
-# extract_and_insert_single_sheet(sheet_name_to_process, excel_file_path, table_name_to_insert)
+#processing2012File("2012")
+processing2012File("2012")
