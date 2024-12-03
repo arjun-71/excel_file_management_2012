@@ -45,7 +45,7 @@ def processing2013File(year: str):
         count = rtn.count_files_in_folder('/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2013')
     
     # Add files to process from the folder
-    file_list = fhm.addFile(count,"2013")         
+    file_list = fhm.addFile(count, "2013")         
 
     # Loop through each file in the file list
     for i in range(len(file_list)):
@@ -66,6 +66,7 @@ def processing2013File(year: str):
        name_in_the_file = first_row.iloc[0]
        project_code = csv_data.columns[1]
        parts = project_code.split('/')
+       
        if len(parts) >= 2:
             # If the project code contains a '/', split it into project name and code
             name_of_the_project = parts[0].strip()
@@ -79,7 +80,6 @@ def processing2013File(year: str):
        new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)           
        # Save the CSV data to a new file
        csv_data.to_csv(new_csv_file_name, index=False)
-   
 
        # Read the newly saved CSV data into a DataFrame
        new_csv_data = pd.read_csv(new_csv_file_name)
@@ -174,17 +174,16 @@ def processing2013File(year: str):
        # Add data to the existing resultant CSV
        rsf.add_data_to_existing_csv(data)
 
-
 # Function to process files for the year 2012
 def processing2012File(year: str):
 
     if year == "2012":
         # Get the count of files in the 2012 folder
-        count = rtn.count_files_in_folder("/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2012")        
+        count = rtn.count_files_in_folder("/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2012")   
 
     # Add files to process from the folder
-    file_list = fhm.addFile(count,"2012")           
-    for i in range(len(file_list)):
+    file_list = fhm.addFile(count, "2012")           
+    for i in range(len(file_list)):                             
         
         # Get the current directory and construct the full path to the Excel file
         current_directory = os.getcwd()
@@ -197,6 +196,7 @@ def processing2012File(year: str):
         csv1 = converter.fileConverter(excel_file_path)
         project_code = csv1.columns[1]
         parts = project_code.split('/')
+        
         if len(parts) >= 2:
             # If the project code contains a '/', split it into project name and code
             name_of_the_project = parts[0].strip()
@@ -219,6 +219,7 @@ def processing2012File(year: str):
         name_in_the_file = first_row.iloc[0]
         project_code = csv.columns[1]
         parts = project_code.split('/')
+        
         if len(parts) >= 2:
             # Extract project name and code from the first row
             name_of_the_project = parts[0].strip()
@@ -294,11 +295,12 @@ def processing2012File(year: str):
         current_folder = os.getcwd()
         current_folder_destination = os.path.join(current_folder, 'resulting_file')       
         file_path = os.path.join(current_folder_destination, resultant_file)
+       
         df.to_csv(file_path, index=False)
 
         # Add data to final output CSV
         data = [[name_of_the_project, project_code, total, total]]
         rsf.add_data_to_existing_csv(data)
 
-# Call the function to process 2013 files
-processing2013File('2013')
+# Call the function to process 2012 files
+processing2012File('2012')
