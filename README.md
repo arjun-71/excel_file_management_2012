@@ -1,84 +1,46 @@
-Scope of the Project: Excel Data Integration for Business Predictions
+Construction Budget Data Processing
 
-1. Project Overview:
-   The project aims to develop a Python-based system for extracting, transforming, and loading (ETL) data from Excel sheets into a database. This data integration process will enable accurate business predictions by utilizing the information contained within these Excel sheets.
+This project processes Excel files related to construction budget data from the years 2012 and 2013. The program converts Excel files to CSV format, processes the data, and generates resultant CSV files containing budget information for university construction projects.
 
-2. Data Sources:
-   - Excel sheets containing relevant business data.
+ Features:
+- Converts Excel files to CSV format.
+- Processes the budget data and inserts it into a database.
+- Generates resultant CSV files containing relevant budget data.
+- Supports data validation and error handling.
+
+ Dependencies:
+To run the project, ensure the following dependencies are installed:
+-  SQLAlchemy : for database connection.
+-  psycopg2 : PostgreSQL adapter for Python.
+-  pandas : for handling data in dataframes.
+-  numpy : for numerical operations.
+-  os : for file path manipulation.
+-  csv : for handling CSV files.
+
+To install these dependencies, use:
+   bash
+pip install sqlalchemy psycopg2 pandas numpy
    
-3. Technologies:
-   - Python for scripting and data processing.
-   - Pandas library for data manipulation.
-   - SQL or NoSQL database for storing integrated data.
-   - Libraries like openpyxl or xlrd for Excel file handling.
 
-4. Key Objectives:
-   - Automate the extraction of data from Excel sheets.
-   - Apply data cleaning and transformation as necessary.
-   - Load the cleaned data into a database for analysis.
-   - Develop predictive models or analysis tools using integrated data.
+Usage:
 
-5. Detailed Project Tasks:
+1. Store Excel files in the Frontend Folder:
+   Place the Excel files you want to process into the  frontend/uploads/2012  or  frontend/uploads/2013  folders, depending on the year.
 
-   a. Data Extraction:
-      - Identify the Excel sheets and their locations.
-      - Read Excel files into Python using appropriate libraries.
-      
-   b. Data Cleaning and Transformation:
-      - Handle missing values, duplicates, and outliers.
-      - Normalize or standardize data if required.
-      - Convert data types to match database schema.
-      
-   c. Database Integration:
-      - Choose a suitable database system (SQL, NoSQL).
-      - Establish a connection to the database.
-      - Create necessary tables or collections.
-      - Define a schema for the integrated data.
-      - Load cleaned data into the database.
+2. Run the Code:
+   - To process files from 2012, use the following command:
+        bash
+     python your_script.py processing2012File('2012')
+        
 
-   d. Data Analysis and Prediction:
-      - Utilize the integrated data to perform business predictions.
-      - Develop machine learning models if needed.
-      - Generate reports or dashboards for visualization.
+   - To process files from 2013, use the following command:
+        bash
+     python your_script.py processing2013File('2013')
+        
 
-   e. Automation and Monitoring:
-      - Schedule regular updates of Excel data integration.
-      - Implement error handling and logging for monitoring.
-      
-   f. Security and Access Control:
-      - Ensure data security and access control measures.
-      - Encrypt sensitive data if required.
-      
-   g. Documentation:
-      - Document the project architecture, code, and usage.
-      - Provide clear instructions for future maintenance.
+3. Output:
+   After running the script, the processed data will be stored in the  resulting_file  folder as CSV files. You can check the folder for the resultant CSV files.
 
-6. Project Deliverables:
-   - Python scripts for data integration and analysis.
-   - Database with integrated Excel data.
-   - Documentation including setup instructions and project overview.
-   - Predictive models or business prediction reports.
-
-7. Timeline:
-   - Define a realistic timeline for each project task.
-   - Consider dependencies between tasks.
-
-8. Team and Responsibilities:
-   - Assign roles and responsibilities to team members if applicable.
-   - Ensure collaboration among data engineers, data scientists, and database administrators.
-
-9. Testing and Quality Assurance:
-   - Implement unit tests and validation checks.
-   - Conduct thorough testing to ensure data accuracy and model performance.
-
-10. Scalability and Future Considerations:
-    - Design the system to handle larger datasets if necessary.
-    - Consider scalability options for the database.
-
-11. Maintenance and Support:
-    - Outline plans for ongoing maintenance and support.
-
-12. Compliance and Regulations:
-    - Ensure compliance with data privacy regulations (e.g., GDPR, HIPAA).
-
-By following this structured project scope, you can develop a robust Python-based system to integrate Excel data into your database for accurate business predictions.
+Notes:
+- Ensure your environment has access to the necessary file paths (e.g.,  frontend/uploads/2012  or  frontend/uploads/2013 ).
+- The code assumes the Excel files are structured in a specific format with columns for  Land Acquisition ,  CLAC , and  Appropriated Budget .
