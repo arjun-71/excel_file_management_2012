@@ -18,22 +18,6 @@ import HelperMethods.final_output_file as fsn
 import HelperMethods.file_handling_method as fhm
 import sys
 import HelperMethods.returnFolderCount as rtn
-from sqlalchemy import create_engine
-import pandas as pd
-import numpy as np
-import os
-import csv
-import sys
-import HelperMethods.FilePathReturn as fp
-import HelperMethods.DatabaseString as dbs
-import HelperMethods.ExcelToCsv as converter
-import HelperMethods.csv_name_changer as nameChanger
-import HelperMethods.InformationToObject as objectInserter
-import HelperMethods.header2 as hds
-import HelperMethods.header3 as hds2
-import HelperMethods.file_handling_method as fhm
-import HelperMethods.resultant_file as rsf
-import dataManagement.csv_file_schema as csv_schema
 
 
 databaseConnectionString = dbs.db_url
@@ -53,20 +37,17 @@ year_2013 = "2013"
 def processing2013File(year: str):
 
     if year == "2013":
-        count = rtn.count_files_in_folder('/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2013')      #the following functions counts the number of files in 2013 file
+        count = rtn.count_files_in_folder('/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2013')
     
     file_list = fhm.addFile(count,"2013")         
-    print(len(file_list))
 
     for i in range(len(file_list)):
        
        current_directory = os.getcwd()
-       print(current_directory)
        frontend_folder = "frontend"
        uploads_folder = "uploads"
        year = "2013"
-       excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder,year, file_list[i])
-       print(excel_file_path)                                 
+       excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder, year, file_list[i])
        
        csv_data = converter.fileConverter(excel_file_path)
        first_row = csv_data.iloc[1]
@@ -83,9 +64,7 @@ def processing2013File(year: str):
             name_of_the_project = None
             project_code = None
 
-       new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
-       print("the new resulting csv file name")
-       print(new_csv_file_name)           
+       new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)           
        csv_data.to_csv(new_csv_file_name, index=False)
    
 
@@ -94,39 +73,16 @@ def processing2013File(year: str):
        budgetData = objectInserter.process_csv_data_2013(new_csv_data, name_of_the_project)        
        result = budgetData.data[name_of_the_project].get('Additional University Costs')
 
-       
-       print(result)
-
        resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
        
-
-    
-
-       print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
-
-
-
        df = pd.read_csv(resultant_file)
 
-
-    print("the value of the given csv file is")
-
-    print(df.head())
-
-   
-
-
-   
     fourth_column = df.iloc[:, 3]
     budget_data_list.append(budgetData)
-    print("the budget data is")
     
     file_budget_mapping[new_csv_file_name] = budgetData
 
     budgetData = file_budget_mapping[new_csv_file_name]
-    print("checker")
-
-    
 
     unnamed_3_values = []
     total = 0.0
@@ -144,7 +100,6 @@ def processing2013File(year: str):
                 try:
                     if value.strip():
                         float_value = float(value)
-                        print(float_value)
                         if float_value >= 0.0:
                             df = pd.DataFrame([[project_code, column1_value, column2_value, column3_value, float_value]],
                                             columns=['name_of_the_project', 'column1_value', 'column2_value', 'column3_value', 'float_value'])
@@ -154,14 +109,10 @@ def processing2013File(year: str):
                             current_folder_destination = os.path.join(current_folder, 'resulting_file')
                             resulting_file = os.path.join(current_folder_destination, file_name)
 
-                          
-                            
-
                             df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
-                            print(df.head())
 
                 except ValueError:
-                    print("Could not convert string to float:", value)
+                    pass
 
         checker = 0
         value = None
@@ -169,7 +120,6 @@ def processing2013File(year: str):
             checker = 0
             try:
                 decimal_value = float(value)
-                print(decimal_value)
             except ValueError:
                 checker = 1
         else:
@@ -187,34 +137,24 @@ def processing2013File(year: str):
 
 
     data = [[name_of_the_project, project_code, total, total]]
-    
-    print(data)
     rsf.add_data_to_existing_csv(data)
-
-
 
 
 def processing2012File(year: str):
 
     if year == "2012":
-        count = rtn.count_files_in_folder("/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2012")        #the following function counts the number of files in the given folder address
-
-    print(count)
+        count = rtn.count_files_in_folder("/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2012")        
 
     file_list = fhm.addFile(count,"2012")           
     for i in range(len (file_list)):
         
-        print("the name of the file list is")
-
         current_directory = os.getcwd()
-        print(current_directory)
         frontend_folder = "frontend"
         uploads_folder = "uploads"
         year = "2012"
-        excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder,year, file_list[i])
-        print(excel_file_path)
+        excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder, year, file_list[i])
+        
         csv1 = converter.fileConverter(excel_file_path)
-        print(csv1.head())
         project_code = csv1.columns[1]
         parts = project_code.split('/')
         if len(parts) >= 2:
@@ -225,7 +165,7 @@ def processing2012File(year: str):
             project_code = None
         
 
-        filePath = fp.get_excel_file_path(file_list[i], i+1,year)         
+        filePath = fp.get_excel_file_path(file_list[i], i+1, year)         
         
 
         csv = converter.fileConverter(filePath)
