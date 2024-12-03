@@ -50,35 +50,23 @@ resultant_file = 'resultant_file.csv'
 year_2012 = "2012"
 year_2013 = "2013"
 
-
-#attach a s3 bucket
-#based upon the s3 bucket folder, the year will be determined and so what script to be executed and all that as well
-#the resulting csv file upon execution will be stored in the destination s3 bucket
-
-    #the function works as such
-    #the incoming file now matter what has to read based upon the standard nomenclature 
-    #so change the uploaded file name first from the frontend itself
-
 def processing2013File(year: str):
 
     if year == "2013":
         count = rtn.count_files_in_folder('/Users/saiarjunshroff/Desktop/2012/excel_file_management_2012/frontend/uploads/2013')      #the following functions counts the number of files in 2013 file
     
-    file_list = fhm.addFile(count,"2013")            #the following adds the excel files in the list of files for being worked upon
+    file_list = fhm.addFile(count,"2013")         
     print(len(file_list))
 
     for i in range(len(file_list)):
-       print("the name of the file list is")
+       
        current_directory = os.getcwd()
        print(current_directory)
        frontend_folder = "frontend"
        uploads_folder = "uploads"
        year = "2013"
        excel_file_path = os.path.join(current_directory, frontend_folder, uploads_folder,year, file_list[i])
-       print(excel_file_path)                           #the following is the file location address on the local machine for 2013 year files
-       
-         
-       
+       print(excel_file_path)                                 
        
        csv_data = converter.fileConverter(excel_file_path)
        first_row = csv_data.iloc[1]
@@ -97,18 +85,20 @@ def processing2013File(year: str):
 
        new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
        print("the new resulting csv file name")
-       print(new_csv_file_name)           #reading successfully from the given address
+       print(new_csv_file_name)           
        csv_data.to_csv(new_csv_file_name, index=False)
    
 
        new_csv_data = pd.read_csv(new_csv_file_name)
 
-       budgetData = objectInserter.process_csv_data_2013(new_csv_data, name_of_the_project)
+       budgetData = objectInserter.process_csv_data_2013(new_csv_data, name_of_the_project)        
        result = budgetData.data[name_of_the_project].get('Additional University Costs')
 
+       
        print(result)
 
        resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
+       
 
     
 
@@ -121,12 +111,16 @@ def processing2013File(year: str):
 
     print("the value of the given csv file is")
 
+    print(df.head())
+
    
 
 
-
+   
     fourth_column = df.iloc[:, 3]
     budget_data_list.append(budgetData)
+    print("the budget data is")
+    
     file_budget_mapping[new_csv_file_name] = budgetData
 
     budgetData = file_budget_mapping[new_csv_file_name]
@@ -160,7 +154,11 @@ def processing2013File(year: str):
                             current_folder_destination = os.path.join(current_folder, 'resulting_file')
                             resulting_file = os.path.join(current_folder_destination, file_name)
 
+                          
+                            
+
                             df.to_csv(resulting_file, mode='a', header=not os.path.exists(resulting_file), index=False)
+                            print(df.head())
 
                 except ValueError:
                     print("Could not convert string to float:", value)
@@ -187,8 +185,14 @@ def processing2013File(year: str):
 
     df.to_csv(file_path, index=False)
 
+
     data = [[name_of_the_project, project_code, total, total]]
+    
+    print(data)
     rsf.add_data_to_existing_csv(data)
+
+
+
 
 def processing2012File(year: str):
 
@@ -197,9 +201,9 @@ def processing2012File(year: str):
 
     print(count)
 
-    file_list = fhm.addFile(count,"2012")            #the following adds the excel files in the list of files for being worked upon
+    file_list = fhm.addFile(count,"2012")           
     for i in range(len (file_list)):
-        #add the code to get the project name initially to be put into the resultant file
+        
         print("the name of the file list is")
 
         current_directory = os.getcwd()
@@ -221,7 +225,7 @@ def processing2012File(year: str):
             project_code = None
         
 
-        filePath = fp.get_excel_file_path(file_list[i], i+1,year)           #add condition that rather than having the  fixed, add flexibility by finding the key word 2012 and also takes the year as a function parameter
+        filePath = fp.get_excel_file_path(file_list[i], i+1,year)         
         
 
         csv = converter.fileConverter(filePath)
@@ -245,7 +249,7 @@ def processing2012File(year: str):
 
         new_csv_data = pd.read_csv(new_csv_file_name)
 
-        budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)       #for 2012 add for 2013 also
+        budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)       
         result = budgetData.data[name_of_the_project].get('Additional University Costs')
 
         resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
@@ -297,12 +301,11 @@ def processing2012File(year: str):
                 df.at[index, 'Unnamed: 3'] = decimal_value
 
         current_folder = os.getcwd()
-        current_folder_destination = os.path.join(current_folder, 'resulting_file')         #the following has the resulting file
+        current_folder_destination = os.path.join(current_folder, 'resulting_file')       
         file_path = os.path.join(current_folder_destination, resultant_file)
         df.to_csv(file_path, index=False)
 
         data = [[name_of_the_project, project_code, total, total]]
         rsf.add_data_to_existing_csv(data)
 
-#processing2012File("2012")
-processing2012File("2012")
+processing2013File('2013')
